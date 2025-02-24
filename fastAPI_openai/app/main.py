@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
+import utils
 
 import os
 load_dotenv()
@@ -13,6 +14,9 @@ app = FastAPI()
 class Order(BaseModel):
     units: int
     product: str
+# create class for OpenAI parameters (pass prompt)
+class OpenAIPrompt(BaseModel):
+    user_prompt: str
 
 @app.get("/start")
 async def start():
@@ -26,9 +30,10 @@ def hello(name: str = "Pranto"):
 def order(orderParams: Order):
     return {"message": f"Order for {orderParams.units} units of {orderParams.product} is placed"}
 
-@app.get("/openai")
-async def openai():
+@app.post("/openai")
+async def openai(prompt: OpenAIPrompt):
+    openai_response = utils.generate_openai(prompt.user_prompt)
+    return {"ai-response": openai_response}
+
     
-    
-    return {"message": "Starting the FastAPI server"}
 
