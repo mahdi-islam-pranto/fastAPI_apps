@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from openai import OpenAI
+from dotenv import load_dotenv
 
+import os
+load_dotenv()
 
 # initialize FastAPI
 app = FastAPI()
@@ -21,4 +25,10 @@ def hello(name: str = "Pranto"):
 @app.post("/order")
 def order(orderParams: Order):
     return {"message": f"Order for {orderParams.units} units of {orderParams.product} is placed"}
+
+@app.get("/openai")
+async def openai():
+    
+    
+    return {"message": "Starting the FastAPI server"}
 
