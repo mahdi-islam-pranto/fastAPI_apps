@@ -8,19 +8,19 @@ app = FastAPI()
 
 # create class for Prompt parameter
 class Prompt(BaseModel):
-    prompt: str
+    user_prompt: str
 
 
 @app.get("/start")
 async def start():
     return {"message": "Starting the FastAPI server"}
 
-@app.get("/ollama")
+@app.post("/ollama")
 async def ollama(prompt : Prompt):
     response: ChatResponse = chat(model='llama3.1:latest', messages=[
     {
       'role': 'user',
-      'content': prompt,
+      'content': prompt.user_prompt,
     },
   ])
     return {"message": response.message.content}
