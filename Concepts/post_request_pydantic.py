@@ -9,7 +9,6 @@ app = FastAPI()
 # Pydantic model for patient data
 # Using Annotated for additional metadata like description and examples
 class Patient(BaseModel):
-
     id: Annotated[str, Field(..., description='ID of the patient', examples=['P001'])]
     name: Annotated[str, Field(..., description='Name of the patient')]
     city: Annotated[str, Field(..., description='City where the patient is living')]
@@ -68,4 +67,3 @@ def create_patient(patient: Patient):
     save_data(data)
 
     return JSONResponse(status_code=201, content={'message':'patient created successfully'})
-
